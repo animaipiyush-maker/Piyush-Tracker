@@ -1,0 +1,2262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Piyush Tracker</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#07111f;
+    color:white;
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+/* BACKGROUND */
+
+body::before{
+    content:"";
+    position:fixed;
+    width:500px;
+    height:500px;
+    background:#1769ff;
+    border-radius:50%;
+    filter:blur(120px);
+    opacity:.22;
+    top:-180px;
+    left:-150px;
+    animation:float1 8s infinite alternate;
+}
+
+body::after{
+    content:"";
+    position:fixed;
+    width:500px;
+    height:500px;
+    background:#a34cff;
+    border-radius:50%;
+    filter:blur(120px);
+    opacity:.18;
+    right:-180px;
+    bottom:-180px;
+    animation:float2 10s infinite alternate;
+}
+
+@keyframes float1{
+    from{transform:translate(0,0)}
+    to{transform:translate(70px,50px)}
+}
+
+@keyframes float2{
+    from{transform:translate(0,0)}
+    to{transform:translate(-60px,-40px)}
+}
+
+/* APP */
+
+.app{
+    width:min(1100px,94%);
+    margin:auto;
+    padding:20px 0 40px;
+    position:relative;
+    z-index:2;
+}
+
+/* GLASS */
+
+.glass{
+    background:rgba(15,27,46,.75);
+    border:1px solid rgba(255,255,255,.1);
+    backdrop-filter:blur(18px);
+    box-shadow:0 20px 70px rgba(0,0,0,.25);
+}
+
+/* HEADER */
+
+.topbar{
+    border-radius:20px;
+    padding:15px 18px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo{
+    width:45px;
+    height:45px;
+    border-radius:14px;
+    display:grid;
+    place-items:center;
+    font-size:23px;
+    background:linear-gradient(135deg,#3694ff,#8061ff);
+    box-shadow:0 0 30px #477dff66;
+}
+
+.brand small{
+    color:#78b7ff;
+    font-size:9px;
+    letter-spacing:2px;
+    font-weight:bold;
+}
+
+.brand h1{
+    font-size:22px;
+    margin-top:2px;
+}
+
+.saved{
+    color:#61e0a5;
+    font-size:11px;
+}
+
+/* HERO */
+
+.hero{
+    margin-top:17px;
+    border-radius:28px;
+    padding:38px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    overflow:hidden;
+}
+
+.hero h2{
+    font-size:clamp(30px,5vw,55px);
+    line-height:1.05;
+    margin:12px 0;
+}
+
+.hero h2 span{
+    background:linear-gradient(90deg,#55b0ff,#a67dff);
+    -webkit-background-clip:text;
+    color:transparent;
+}
+
+.hero p{
+    color:#9caac0;
+}
+
+.badge{
+    display:inline-block;
+    padding:7px 11px;
+    border-radius:30px;
+    background:#55a7ff12;
+    border:1px solid #55a7ff44;
+    color:#8fc7ff;
+    font-size:10px;
+    font-weight:bold;
+    letter-spacing:1px;
+}
+
+.buttons{
+    display:flex;
+    gap:10px;
+    margin-top:24px;
+}
+
+button{
+    cursor:pointer;
+    border:0;
+    font-weight:bold;
+}
+
+.primary{
+    padding:14px 20px;
+    border-radius:12px;
+    color:white;
+    background:linear-gradient(135deg,#338cff,#6c62ff);
+    box-shadow:0 10px 30px #3f7cff33;
+    transition:.2s;
+}
+
+.primary:hover{
+    transform:translateY(-3px);
+    box-shadow:0 15px 35px #3f7cff55;
+}
+
+.secondary{
+    padding:14px 20px;
+    border-radius:12px;
+    color:white;
+    background:#ffffff0d;
+    border:1px solid rgba(255,255,255,.1);
+}
+
+/* PROGRESS CIRCLE */
+
+.progress-circle{
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    background:conic-gradient(#55a7ff 0%,#ffffff10 0);
+    padding:10px;
+}
+
+.progress-inner{
+    width:100%;
+    height:100%;
+    border-radius:50%;
+    background:#09172a;
+    display:grid;
+    place-items:center;
+    align-content:center;
+}
+
+.progress-inner strong{
+    font-size:38px;
+}
+
+.progress-inner small{
+    color:#8290a6;
+}
+
+/* STEPS */
+
+.steps{
+    margin:17px 0;
+    padding:14px;
+    border-radius:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+}
+
+.step{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:#65748b;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.step b{
+    padding:7px 9px;
+    border-radius:8px;
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.step.active{
+    color:white;
+}
+
+.step.active b{
+    background:#3b8fff;
+    border-color:#3b8fff;
+    box-shadow:0 0 20px #3b8fff66;
+}
+
+.line{
+    width:40px;
+    height:1px;
+    background:#ffffff12;
+}
+
+/* PAGE */
+
+.page{
+    display:none;
+    animation:appear .4s ease;
+}
+
+.page.active{
+    display:block;
+}
+
+@keyframes appear{
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+    to{
+        opacity:1;
+        transform:none;
+    }
+}
+
+/* CARD */
+
+.card{
+    padding:30px;
+    border-radius:24px;
+}
+
+.card h2{
+    font-size:29px;
+    margin-bottom:8px;
+}
+
+.muted{
+    color:#8e9db2;
+}
+
+label{
+    display:block;
+    color:#cbd5e5;
+    font-size:12px;
+    font-weight:bold;
+    margin:20px 0 8px;
+}
+
+input,select{
+    width:100%;
+    padding:14px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,.1);
+    background:#09172a;
+    color:white;
+    outline:none;
+}
+
+input:focus,select:focus{
+    border-color:#55a7ff;
+    box-shadow:0 0 0 4px #55a7ff12;
+}
+
+.full{
+    width:100%;
+    margin-top:22px;
+}
+
+/* SUBJECT CARDS */
+
+.subject-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+    margin:20px 0;
+}
+
+.subject-card{
+    padding:21px;
+    border-radius:20px;
+    position:relative;
+    overflow:hidden;
+    transition:.25s;
+}
+
+.subject-card:hover{
+    transform:translateY(-5px);
+}
+
+.subject-icon{
+    font-size:35px;
+}
+
+.subject-name{
+    display:inline-block;
+    margin-top:12px;
+    padding:6px 10px;
+    border-radius:30px;
+    background:#ffffff0d;
+    font-size:10px;
+    letter-spacing:1.5px;
+    font-weight:bold;
+}
+
+.subject-card h3{
+    margin-top:9px;
+    font-size:20px;
+}
+
+.subject-card p{
+    margin-top:5px;
+    color:#8190a6;
+    font-size:12px;
+}
+
+/* SUBJECT COLORS */
+
+.science{
+    --theme:#27c7ff;
+    border-color:#27c7ff33;
+}
+
+.math{
+    --theme:#a17bff;
+    border-color:#a17bff33;
+}
+
+.sst{
+    --theme:#ffad5c;
+    border-color:#ffad5c33;
+}
+
+.english{
+    --theme:#ff5f9a;
+    border-color:#ff5f9a33;
+}
+
+.hindi{
+    --theme:#45e0a4;
+    border-color:#45e0a433;
+}
+
+/* TIP */
+
+.tip{
+    margin:18px 0;
+    padding:15px;
+    border-radius:14px;
+    background:#ffffff06;
+    border:1px solid rgba(255,255,255,.08);
+    color:#b9c8dc;
+}
+
+/* CHAPTER SUBJECT */
+
+.subject{
+    margin:14px 0;
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,.1);
+    overflow:hidden;
+    background:#ffffff03;
+}
+
+.subject-header{
+    padding:16px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#ffffff05;
+}
+
+.subject-header h3{
+    font-size:18px;
+}
+
+.subject-count{
+    color:#8190a6;
+    font-size:11px;
+}
+
+.chapters{
+    padding:5px 17px;
+}
+
+.chapter{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    padding:11px 0;
+    border-bottom:1px solid #ffffff08;
+    color:#b9c6d8;
+}
+
+.chapter:last-child{
+    border-bottom:0;
+}
+
+.chapter input{
+    width:auto;
+    margin-top:3px;
+    accent-color:#55a7ff;
+}
+
+/* DASHBOARD */
+
+.dashboard{
+    padding:25px;
+    border-radius:23px;
+}
+
+.dashboard-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.dashboard-header h2{
+    font-size:29px;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:13px;
+    margin:17px 0;
+}
+
+.stat{
+    padding:20px;
+    border-radius:18px;
+}
+
+.stat strong{
+    display:block;
+    font-size:31px;
+}
+
+.stat span{
+    color:#8492a8;
+    font-size:11px;
+}
+
+/* PROFILES */
+
+.profile{
+    padding:17px;
+    margin:11px 0;
+    border-radius:17px;
+    border:1px solid rgba(255,255,255,.1);
+}
+
+.profile-top{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.profile-icon{
+    width:45px;
+    height:45px;
+    display:grid;
+    place-items:center;
+    border-radius:13px;
+    background:#ffffff08;
+    font-size:22px;
+}
+
+.profile-name{
+    font-weight:bold;
+}
+
+.profile-sub{
+    color:#7f90a8;
+    font-size:10px;
+    margin-top:3px;
+}
+
+.percent{
+    margin-left:auto;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.bar{
+    height:7px;
+    margin-top:13px;
+    border-radius:99px;
+    background:#ffffff09;
+    overflow:hidden;
+}
+
+.fill{
+    height:100%;
+    width:0;
+    border-radius:99px;
+    background:linear-gradient(90deg,var(--theme),white);
+    transition:width 1s ease;
+}
+
+/* EXAMS */
+
+.exam{
+    padding:14px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,.1);
+    margin-top:10px;
+    display:flex;
+    justify-content:space-between;
+}
+
+.exam span{
+    color:#8fa0b7;
+    font-size:12px;
+}
+
+.empty{
+    color:#77869c;
+    padding:20px 0;
+}
+
+/* FOOTER */
+
+footer{
+    text-align:center;
+    margin-top:25px;
+    color:#56677e;
+    font-size:11px;
+}
+
+/* MOBILE */
+
+@media(max-width:700px){
+
+    .app{
+        width:94%;
+    }
+
+    .hero{
+        display:block;
+        padding:25px;
+    }
+
+    .progress-circle{
+        width:140px;
+        height:140px;
+        margin:28px auto 0;
+    }
+
+    .buttons{
+        flex-direction:column;
+    }
+
+    .steps{
+        overflow-x:auto;
+        justify-content:flex-start;
+    }
+
+    .step span{
+        display:none;
+    }
+
+    .line{
+        min-width:20px;
+    }
+
+    .subject-grid{
+        grid-template-columns:1fr;
+    }
+
+    .stats{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .stats .stat:last-child{
+        grid-column:1/-1;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header class="topbar glass">
+
+<div class="brand">
+
+<div class="logo">⚡</div>
+
+<div>
+<small>CBSE COMMAND CENTER</small>
+<h1>Piyush Tracker</h1>
+</div>
+
+</div>
+
+<div class="saved">● Saved locally</div>
+
+</header>
+
+
+<section class="hero glass">
+
+<div>
+
+<span class="badge">CLASS 10 • STUDY MODE</span>
+
+<h2>
+Turn your syllabus into a
+<span>game plan.</span>
+</h2>
+
+<p>
+Plan exams, finish chapters and watch your progress level up.
+</p>
+
+<div class="buttons">
+
+<button class="primary" onclick="go(5)">
+Open Dashboard →
+</button>
+
+<button class="secondary" onclick="go(2)">
+Set Datesheet
+</button>
+
+</div>
+
+</div>
+
+
+<div class="progress-circle" id="circle">
+
+<div class="progress-inner">
+
+<strong id="overallPercent">0%</strong>
+
+<small>overall</small>
+
+</div>
+
+</div>
+
+</section>
+
+
+<nav class="steps glass">
+
+<div class="step active" data-step="1">
+<b>01</b>
+<span>Student</span>
+</div>
+
+<div class="line"></div>
+
+<div class="step" data-step="2">
+<b>02</b>
+<span>Datesheet</span>
+</div>
+
+<div class="line"></div>
+
+<div class="step" data-step="3">
+<b>03</b>
+<span>Syllabus</span>
+</div>
+
+<div class="line"></div>
+
+<div class="step" data-step="4">
+<b>04</b>
+<span>Finished</span>
+</div>
+
+<div class="line"></div>
+
+<div class="step" data-step="5">
+<b>05</b>
+<span>Dashboard</span>
+</div>
+
+</nav>
+
+
+<!-- STEP 1 -->
+
+<section id="step1" class="page active">
+
+<div class="card glass">
+
+<h2>🎓 Student Details</h2>
+
+<p class="muted">
+Set up your personal tracker.
+</p>
+
+<label>Student Name</label>
+
+<input
+id="studentName"
+placeholder="Enter your name"
+>
+
+<label>Class</label>
+
+<select id="classGrade">
+
+<option value="10">
+Class 10
+</option>
+
+<option value="9">
+Class 9
+</option>
+
+</select>
+
+<button
+class="primary full next"
+data-next="2"
+>
+Continue to Datesheet →
+</button>
+
+</div>
+
+</section>
+
+
+<!-- STEP 2 -->
+
+<section id="step2" class="page">
+
+<div class="card glass">
+
+<h2>📅 Exam Datesheet</h2>
+
+<p class="muted">
+Set the exam date for every subject.
+</p>
+
+<div
+id="dateGrid"
+class="subject-grid"
+></div>
+
+<button
+class="primary full next"
+data-next="3"
+>
+Continue to Syllabus →
+</button>
+
+</div>
+
+</section>
+
+
+<!-- STEP 3 -->
+
+<section id="step3" class="page">
+
+<div class="card glass">
+
+<h2>📚 Exam Syllabus</h2>
+
+<p class="muted">
+Keep checked only the chapters included in your exam.
+</p>
+
+<div class="tip">
+💡 Your progress percentage will be calculated from the chapters you select here.
+</div>
+
+<div id="syllabus"></div>
+
+<button
+class="primary full next"
+data-next="4"
+>
+Continue to Finished Work →
+</button>
+
+</div>
+
+</section>
+
+
+<!-- STEP 4 -->
+
+<section id="step4" class="page">
+
+<div class="card glass">
+
+<h2>🏆 Finished Work</h2>
+
+<p class="muted">
+Tick the chapters that you have completed.
+</p>
+
+<div id="finished"></div>
+
+<button
+class="primary full next"
+data-next="5"
+>
+Launch My Dashboard 🚀
+</button>
+
+</div>
+
+</section>
+
+
+<!-- STEP 5 -->
+
+<section id="step5" class="page">
+
+<div class="dashboard glass">
+
+<div class="dashboard-header">
+
+<div>
+
+<small style="color:#78b7ff">
+05 / COMMAND CENTER
+</small>
+
+<h2 id="welcome">
+Piyush Tracker
+</h2>
+
+<p class="muted">
+Your preparation at a glance.
+</p>
+
+</div>
+
+<button
+class="secondary"
+onclick="go(1)"
+>
+✎ Edit
+</button>
+
+</div>
+
+
+<div
+id="summary"
+class="stats"
+></div>
+
+
+<h2 style="margin-top:25px">
+🎯 Subject Profiles
+</h2>
+
+<div id="progressList"></div>
+
+
+<h2 style="margin-top:30px">
+📅 Upcoming Exams
+</h2>
+
+<div id="upcoming"></div>
+
+</div>
+
+</section>
+
+
+<footer>
+
+Made for <b>Piyush</b> • Your syllabus. Your pace. Your tracker.
+
+</footer>
+
+  </div>
+  <script>
+
+/* ================================
+   PIYUSH TRACKER — SUBJECT DATA
+   PART 2 / 3
+================================ */
+
+const SUBJECTS = {
+
+Science: {
+    icon: "🧪",
+    className: "science",
+    description: "Concepts, experiments & diagrams",
+
+    chapters: [
+        "Chemical Reactions and Equations",
+        "Acids, Bases and Salts",
+        "Metals and Non-metals",
+        "Carbon and its Compounds",
+        "Life Processes",
+        "Control and Coordination",
+        "How do Organisms Reproduce?",
+        "Heredity",
+        "Light – Reflection and Refraction",
+        "The Human Eye and the Colourful World",
+        "Electricity",
+        "Magnetic Effects of Electric Current",
+        "Our Environment"
+    ]
+},
+
+Mathematics: {
+    icon: "📐",
+    className: "math",
+    description: "Logic, equations & problem solving",
+
+    chapters: [
+        "Real Numbers",
+        "Polynomials",
+        "Pair of Linear Equations in Two Variables",
+        "Quadratic Equations",
+        "Arithmetic Progressions",
+        "Triangles",
+        "Coordinate Geometry",
+        "Introduction to Trigonometry",
+        "Some Applications of Trigonometry",
+        "Circles",
+        "Areas Related to Circles",
+        "Surface Areas and Volumes",
+        "Statistics",
+        "Probability"
+    ]
+},
+
+"Social Science": {
+    icon: "🌍",
+    className: "sst",
+    description: "History, civics, geography & economics",
+
+    chapters: [
+        "Resources and Development",
+        "Forest and Wildlife Resources",
+        "Water Resources",
+        "Agriculture",
+        "Manufacturing Industries",
+        "Lifelines of National Economy",
+        "Power Sharing",
+        "Federalism",
+        "Gender, Religion and Caste",
+        "Political Parties",
+        "Outcomes of Democracy",
+        "Development",
+        "Sectors of the Indian Economy",
+        "Money and Credit",
+        "Globalisation and the Indian Economy",
+        "Consumer Rights",
+        "The Rise of Nationalism in Europe",
+        "Nationalism in India",
+        "The Making of a Global World",
+        "The Age of Industrialisation",
+        "Print Culture and the Modern World"
+    ]
+},
+
+English: {
+    icon: "📖",
+    className: "english",
+    description: "Literature, grammar & writing",
+
+    chapters: [
+        "A Letter to God",
+        "Nelson Mandela: Long Walk to Freedom",
+        "Two Stories about Flying",
+        "From the Diary of Anne Frank",
+        "Glimpses of India",
+        "Mijbil the Otter",
+        "Madam Rides the Bus",
+        "The Sermon at Benares",
+        "The Proposal",
+        "Dust of Snow",
+        "Fire and Ice",
+        "A Tiger in the Zoo",
+        "How to Tell Wild Animals",
+        "The Ball Poem",
+        "Amanda!",
+        "Animals",
+        "The Trees",
+        "Fog",
+        "The Tale of Custard the Dragon",
+        "For Anne Gregory",
+        "A Triumph of Surgery",
+        "The Thief's Story",
+        "The Midnight Visitor",
+        "A Question of Trust",
+        "Footprints without Feet",
+        "The Making of a Scientist",
+        "The Necklace",
+        "Bholi",
+        "The Book That Saved the Earth"
+    ]
+},
+
+Hindi: {
+    icon: "🪔",
+    className: "hindi",
+    description: "काव्य, गद्य, व्याकरण और लेखन",
+
+    chapters: [
+        "क्षितिज – सूरदास के पद",
+        "क्षितिज – राम-लक्ष्मण-परशुराम संवाद",
+        "क्षितिज – आत्मकथ्य",
+        "क्षितिज – उत्साह और अट नहीं रही",
+        "क्षितिज – यह दंतुरित मुस्कान",
+        "क्षितिज – फसल",
+        "क्षितिज – संगतकार",
+        "कृतिका – माता का अँचल",
+        "कृतिका – साना-साना हाथ जोड़ि",
+        "कृतिका – मैं क्यों लिखता हूँ?",
+        "व्याकरण – समास",
+        "व्याकरण – वाक्य रूपांतरण",
+        "लेखन – अनुच्छेद",
+        "लेखन – पत्र लेखन",
+        "लेखन – सूचना / विज्ञापन"
+    ]
+};
+
+
+/* ================================
+   DEFAULT TRACKER DATA
+================================ */
+
+const SUBJECT_NAMES = Object.keys(SUBJECTS);
+
+let trackerData =
+    JSON.parse(
+        localStorage.getItem("PIYUSH_TRACKER_DATA")
+    ) || {
+
+        studentName: "",
+
+        className: "10",
+
+        examDates: {},
+
+        included: {},
+
+        finished: {}
+
+    };
+
+
+/* ================================
+   CREATE DEFAULT DATA
+================================ */
+
+SUBJECT_NAMES.forEach(function(subject){
+
+    if(!trackerData.included[subject]){
+
+        trackerData.included[subject] =
+            SUBJECTS[subject].chapters.map(
+                function(){
+                    return true;
+                }
+            );
+
+    }
+
+    if(!trackerData.finished[subject]){
+
+        trackerData.finished[subject] = [];
+
+    }
+
+});
+
+
+/* ================================
+   SAVE DATA
+================================ */
+
+function saveTracker(){
+
+    localStorage.setItem(
+        "PIYUSH_TRACKER_DATA",
+        JSON.stringify(trackerData)
+    );
+
+}
+
+
+/* ================================
+   SUBJECT CARD
+================================ */
+
+function createSubjectCard(subject){
+
+    const data = SUBJECTS[subject];
+
+    return `
+
+    <div class="subject-card glass ${data.className}">
+
+        <div class="subject-icon">
+            ${data.icon}
+        </div>
+
+        <div class="subject-name">
+            ${subject.toUpperCase()}
+        </div>
+
+        <h3>
+            ${subject}
+        </h3>
+
+        <p>
+            ${data.description}
+        </p>
+
+        <label>
+            Exam Date
+        </label>
+
+        <input
+            type="date"
+            value="${trackerData.examDates[subject] || ""}"
+            onchange="
+                updateExamDate(
+                    '${subject}',
+                    this.value
+                )
+            "
+        >
+
+    </div>
+
+    `;
+
+}
+
+
+/* ================================
+   UPDATE EXAM DATE
+================================ */
+
+function updateExamDate(subject,date){
+
+    trackerData.examDates[subject] = date;
+
+    saveTracker();
+
+    updateDashboard();
+
+}
+
+
+/* ================================
+   RENDER DATE PAGE
+================================ */
+
+function renderDates(){
+
+    const container =
+        document.getElementById("dateGrid");
+
+    if(!container) return;
+
+    container.innerHTML =
+        SUBJECT_NAMES
+        .map(createSubjectCard)
+        .join("");
+
+}
+
+
+/* ================================
+   SYLLABUS PAGE
+================================ */
+
+function renderSyllabus(){
+
+    const container =
+        document.getElementById("syllabus");
+
+    if(!container) return;
+
+    container.innerHTML =
+        SUBJECT_NAMES.map(function(subject){
+
+            const data = SUBJECTS[subject];
+
+            const selected =
+                trackerData.included[subject]
+                .filter(Boolean)
+                .length;
+
+            return `
+
+            <div class="subject">
+
+                <div class="subject-header">
+
+                    <h3>
+                        ${data.icon}
+                        ${subject}
+                    </h3>
+
+                    <span class="subject-count">
+                        ${selected}/${data.chapters.length}
+                        selected
+                    </span>
+
+                </div>
+
+                <div class="chapters">
+
+                    ${
+                        data.chapters.map(
+                            function(chapter,index){
+
+                                const checked =
+                                    trackerData
+                                    .included[subject][index]
+                                    ? "checked"
+                                    : "";
+
+                                return `
+
+                                <label class="chapter">
+
+                                    <input
+                                        type="checkbox"
+                                        ${checked}
+                                        onchange="
+                                            changeSyllabus(
+                                                '${subject}',
+                                                ${index},
+                                                this.checked
+                                            )
+                                        "
+                                    >
+
+                                    <span>
+                                        ${chapter}
+                                    </span>
+
+                                </label>
+
+                                `;
+
+                            }
+                        ).join("")
+                    }
+
+                </div>
+
+            </div>
+
+            `;
+
+        }).join("");
+
+}
+
+
+/* ================================
+   CHANGE SYLLABUS
+================================ */
+
+function changeSyllabus(
+    subject,
+    index,
+    value
+){
+
+    trackerData.included[subject][index] =
+        value;
+
+    saveTracker();
+
+    renderSyllabus();
+
+    renderFinished();
+
+    updateDashboard();
+
+}
+
+
+/* ================================
+   FINISHED WORK
+================================ */
+
+function renderFinished(){
+
+    const container =
+        document.getElementById("finished");
+
+    if(!container) return;
+
+    container.innerHTML =
+        SUBJECT_NAMES.map(function(subject){
+
+            const data = SUBJECTS[subject];
+
+            const finished =
+                trackerData.finished[subject];
+
+            const selected =
+                trackerData.included[subject]
+                .filter(Boolean)
+                .length;
+
+            return `
+
+            <div class="subject">
+
+                <div class="subject-header">
+
+                    <h3>
+                        ${data.icon}
+                        ${subject}
+                    </h3>
+
+                    <span class="subject-count">
+
+                        ${finished.length}/${selected}
+                        finished
+
+                    </span>
+
+                </div>
+
+                <div class="chapters">
+
+                    ${
+                        data.chapters.map(
+                            function(chapter,index){
+
+                                if(
+                                    !trackerData
+                                    .included[subject][index]
+                                ){
+
+                                    return "";
+
+                                }
+
+                                const checked =
+                                    finished.includes(index)
+                                    ? "checked"
+                                    : "";
+
+                                return `
+
+                                <label class="chapter">
+
+                                    <input
+                                        type="checkbox"
+                                        ${checked}
+                                        onchange="
+                                            toggleFinished(
+                                                '${subject}',
+                                                ${index},
+                                                this.checked
+                                            )
+                                        "
+                                    >
+
+                                    <span>
+                                        ${chapter}
+                                    </span>
+
+                                </label>
+
+                                `;
+
+                            }
+                        ).join("")
+                    }
+
+                </div>
+
+            </div>
+
+            `;
+
+        }).join("");
+
+}
+
+
+/* ================================
+   MARK CHAPTER FINISHED
+================================ */
+
+function toggleFinished(
+    subject,
+    index,
+    checked
+){
+
+    let finished =
+        trackerData.finished[subject];
+
+    if(checked){
+
+        if(!finished.includes(index)){
+
+            finished.push(index);
+
+        }
+
+    }else{
+
+        finished =
+            finished.filter(
+                function(item){
+                    return item !== index;
+                }
+            );
+
+        trackerData.finished[subject] =
+            finished;
+
+    }
+
+    saveTracker();
+
+    renderFinished();
+
+    updateDashboard();
+
+}
+
+
+/* ================================
+   CALCULATE PROGRESS
+================================ */
+
+function calculateProgress(){
+
+    let total = 0;
+
+    let finished = 0;
+
+    SUBJECT_NAMES.forEach(
+        function(subject){
+
+            total +=
+                trackerData
+                .included[subject]
+                .filter(Boolean)
+                .length;
+
+            finished +=
+                trackerData
+                .finished[subject]
+                .length;
+
+        }
+    );
+
+    const percent =
+        total === 0
+        ? 0
+        : Math.round(
+            (finished / total) * 100
+        );
+
+    return {
+        total: total,
+        finished: finished,
+        percent: percent
+    };
+
+}
+
+  </script>
+  <script>
+
+/* =========================================
+   PIYUSH TRACKER — PART 3 / 3
+   DASHBOARD + NAVIGATION + ANIMATIONS
+========================================= */
+
+
+/* =========================================
+   SAVE STUDENT DETAILS
+========================================= */
+
+const studentInput =
+    document.getElementById("studentName");
+
+const classInput =
+    document.getElementById("classGrade");
+
+
+if(studentInput){
+
+    studentInput.value =
+        trackerData.studentName || "";
+
+}
+
+
+if(classInput){
+
+    classInput.value =
+        trackerData.className || "10";
+
+}
+
+
+/* =========================================
+   NAVIGATION
+========================================= */
+
+function go(step){
+
+    document
+        .querySelectorAll(".page")
+        .forEach(function(page){
+
+            page.classList.remove("active");
+
+        });
+
+
+    const target =
+        document.getElementById(
+            "step" + step
+        );
+
+
+    if(target){
+
+        target.classList.add("active");
+
+    }
+
+
+    document
+        .querySelectorAll(".step")
+        .forEach(function(item){
+
+            item.classList.remove("active");
+
+        });
+
+
+    const activeStep =
+        document.querySelector(
+            '.step[data-step="' + step + '"]'
+        );
+
+
+    if(activeStep){
+
+        activeStep.classList.add("active");
+
+    }
+
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+
+    if(step === 2){
+
+        renderDates();
+
+    }
+
+
+    if(step === 3){
+
+        renderSyllabus();
+
+    }
+
+
+    if(step === 4){
+
+        renderFinished();
+
+    }
+
+
+    if(step === 5){
+
+        updateDashboard();
+
+    }
+
+}
+
+
+/* =========================================
+   NEXT BUTTONS
+========================================= */
+
+document
+    .querySelectorAll(".next")
+    .forEach(function(button){
+
+        button.addEventListener(
+            "click",
+            function(){
+
+                const current =
+                    button
+                    .closest(".page")
+                    .id
+                    .replace("step","");
+
+
+                if(current === "1"){
+
+                    trackerData.studentName =
+                        studentInput.value.trim();
+
+                    trackerData.className =
+                        classInput.value;
+
+                    if(
+                        !trackerData.studentName
+                    ){
+
+                        trackerData.studentName =
+                            "Piyush";
+
+                    }
+
+                    saveTracker();
+
+                }
+
+
+                go(
+                    Number(
+                        button.dataset.next
+                    )
+                );
+
+            }
+        );
+
+    });
+
+
+/* =========================================
+   DASHBOARD UPDATE
+========================================= */
+
+function updateDashboard(){
+
+    const result =
+        calculateProgress();
+
+
+    /* OVERALL PERCENT */
+
+    const percent =
+        result.percent;
+
+
+    const percentText =
+        document.getElementById(
+            "overallPercent"
+        );
+
+
+    if(percentText){
+
+        percentText.textContent =
+            percent + "%";
+
+    }
+
+
+    /* CIRCLE */
+
+    const circle =
+        document.getElementById(
+            "circle"
+        );
+
+
+    if(circle){
+
+        circle.style.background =
+            `conic-gradient(
+                #55a7ff ${percent}%,
+                #ffffff10 ${percent}%
+            )`;
+
+    }
+
+
+    /* WELCOME */
+
+    const welcome =
+        document.getElementById(
+            "welcome"
+        );
+
+
+    if(welcome){
+
+        const name =
+            trackerData.studentName ||
+            "Piyush";
+
+        welcome.textContent =
+            "Hello, " + name + " 👋";
+
+    }
+
+
+    /* SUMMARY */
+
+    const summary =
+        document.getElementById(
+            "summary"
+        );
+
+
+    if(summary){
+
+        summary.innerHTML = `
+
+            <div class="stat glass">
+
+                <strong>
+                    ${percent}%
+                </strong>
+
+                <span>
+                    Overall Progress
+                </span>
+
+            </div>
+
+
+            <div class="stat glass">
+
+                <strong>
+                    ${result.finished}
+                </strong>
+
+                <span>
+                    Chapters Finished
+                </span>
+
+            </div>
+
+
+            <div class="stat glass">
+
+                <strong>
+                    ${result.total}
+                </strong>
+
+                <span>
+                    Total Selected
+                </span>
+
+            </div>
+
+        `;
+
+    }
+
+
+    renderProfiles();
+
+    renderUpcoming();
+
+}
+
+
+/* =========================================
+   SUBJECT PROFILES
+========================================= */
+
+function renderProfiles(){
+
+    const container =
+        document.getElementById(
+            "progressList"
+        );
+
+
+    if(!container) return;
+
+
+    container.innerHTML =
+        SUBJECT_NAMES.map(
+            function(subject){
+
+                const data =
+                    SUBJECTS[subject];
+
+
+                const selected =
+                    trackerData
+                    .included[subject]
+                    .filter(Boolean)
+                    .length;
+
+
+                const finished =
+                    trackerData
+                    .finished[subject]
+                    .length;
+
+
+                const percent =
+                    selected === 0
+                    ? 0
+                    : Math.round(
+                        finished /
+                        selected *
+                        100
+                    );
+
+
+                return `
+
+                <div
+                    class="profile glass ${data.className}"
+                >
+
+                    <div
+                        class="profile-top"
+                    >
+
+                        <div
+                            class="profile-icon"
+                        >
+
+                            ${data.icon}
+
+                        </div>
+
+
+                        <div>
+
+                            <div
+                                class="profile-sub"
+                            >
+
+                                SUBJECT PROFILE
+
+                            </div>
+
+
+                            <div
+                                class="profile-name"
+                            >
+
+                                ${subject}
+
+                            </div>
+
+
+                            <div
+                                class="profile-sub"
+                            >
+
+                                ${finished}
+                                /
+                                ${selected}
+                                chapters completed
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            class="percent"
+                        >
+
+                            ${percent}%
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="bar">
+
+                        <div
+                            class="fill"
+                            style="
+                                width:${percent}%;
+                                background:
+                                linear-gradient(
+                                    90deg,
+                                    var(--theme),
+                                    white
+                                );
+                            "
+                        ></div>
+
+                    </div>
+
+                </div>
+
+                `;
+
+            }
+        ).join("");
+
+}
+
+
+/* =========================================
+   UPCOMING EXAMS
+========================================= */
+
+function renderUpcoming(){
+
+    const container =
+        document.getElementById(
+            "upcoming"
+        );
+
+
+    if(!container) return;
+
+
+    const exams =
+        SUBJECT_NAMES
+        .filter(
+            function(subject){
+
+                return trackerData
+                    .examDates[subject];
+
+            }
+        )
+        .map(
+            function(subject){
+
+                return {
+
+                    subject:subject,
+
+                    date:
+                        trackerData
+                        .examDates[subject]
+
+                };
+
+            }
+        )
+        .sort(
+            function(a,b){
+
+                return new Date(a.date)
+                    -
+                    new Date(b.date);
+
+            }
+        );
+
+
+    if(exams.length === 0){
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                📅 No exam dates added yet.
+
+                <br>
+
+                Go back to Datesheet
+                and add your dates.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        exams.map(
+            function(exam){
+
+                const data =
+                    SUBJECTS[
+                        exam.subject
+                    ];
+
+
+                const date =
+                    new Date(
+                        exam.date
+                    );
+
+
+                const formatted =
+                    date.toLocaleDateString(
+                        "en-IN",
+                        {
+                            day:"numeric",
+                            month:"short",
+                            year:"numeric"
+                        }
+                    );
+
+
+                return `
+
+                <div
+                    class="exam glass"
+                >
+
+                    <span>
+
+                        ${data.icon}
+                        ${exam.subject}
+
+                    </span>
+
+
+                    <strong>
+
+                        ${formatted}
+
+                    </strong>
+
+                </div>
+
+                `;
+
+            }
+        ).join("");
+
+}
+
+
+/* =========================================
+   RESET TRACKER
+========================================= */
+
+function resetTracker(){
+
+    const confirmReset =
+        confirm(
+            "Reset your entire Piyush Tracker?"
+        );
+
+
+    if(!confirmReset) return;
+
+
+    localStorage.removeItem(
+        "PIYUSH_TRACKER_DATA"
+    );
+
+
+    location.reload();
+
+}
+
+
+/* =========================================
+   KEYBOARD SHORTCUT
+========================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            event.key === "Escape"
+        ){
+
+            go(5);
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   STARTUP
+========================================= */
+
+saveTracker();
+
+renderDates();
+
+renderSyllabus();
+
+renderFinished();
+
+updateDashboard();
+
+
+/* =========================================
+   LITTLE ANIMATION
+========================================= */
+
+setInterval(
+    function(){
+
+        const saved =
+            document.querySelector(
+                ".saved"
+            );
+
+
+        if(!saved) return;
+
+
+        saved.style.opacity = "0.35";
+
+
+        setTimeout(
+            function(){
+
+                saved.style.opacity = "1";
+
+            },
+            400
+        );
+
+    },
+    5000
+);
+
+
+/* =========================================
+   ADD RESET BUTTON TO DASHBOARD
+========================================= */
+
+const dashboard =
+    document.querySelector(
+        "#step5 .dashboard"
+    );
+
+
+if(dashboard){
+
+    const reset =
+        document.createElement(
+            "button"
+        );
+
+
+    reset.className =
+        "secondary";
+
+    reset.style.marginTop =
+        "20px";
+
+    reset.style.width =
+        "100%";
+
+    reset.textContent =
+        "↻ Reset Tracker";
+
+
+    reset.onclick =
+        resetTracker;
+
+
+    dashboard.appendChild(
+        reset
+    );
+
+}
+
+</script>
+
+</body>
+  </html>
