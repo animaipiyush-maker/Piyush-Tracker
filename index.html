@@ -2256,7 +2256,68 @@ if(dashboard){
 
 }
 
-</script>
+    <script>
+document.addEventListener("click", function (event) {
 
+    const clicked = event.target.closest("button, a, [role='button']");
+
+    if (!clicked) return;
+
+    const text = clicked.textContent.trim().toLowerCase();
+
+    if (text.includes("continue") && text.includes("syllabus")) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        /* Possible syllabus section names */
+        const syllabus =
+            document.getElementById("syllabus") ||
+            document.getElementById("syllabus-section") ||
+            document.querySelector('[data-section="syllabus"]') ||
+            document.querySelector(".syllabus");
+
+        /* Hide onboarding / intro screens */
+        document.querySelectorAll(
+            "#page2, #page3, #page4, #page5, .page2, .page3, .page4, .page5"
+        ).forEach(function(page) {
+            page.style.display = "none";
+        });
+
+        /* Show syllabus */
+        if (syllabus) {
+            syllabus.style.display = "";
+            syllabus.hidden = false;
+
+            setTimeout(function() {
+                syllabus.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+            }, 100);
+        }
+
+        /* Also try common navigation functions if they exist */
+        if (typeof showSection === "function") {
+            try {
+                showSection("syllabus");
+            } catch(e) {}
+        }
+
+        if (typeof showPage === "function") {
+            try {
+                showPage("syllabus");
+            } catch(e) {}
+        }
+
+        if (typeof goToPage === "function") {
+            try {
+                goToPage("syllabus");
+            } catch(e) {}
+        }
+    }
+
+}, true);
+</script>
 </body>
   </html>
